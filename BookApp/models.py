@@ -67,6 +67,7 @@ class User(models.Model):
     User_Name = models.CharField(max_length=50, default=Random_Name)
     User_CreateDate = models.DateTimeField(auto_now=True)
     User_Rented_Books = models.ManyToManyField(Books, blank=True)
+    User_Saved_Books = models.ManyToManyField(Books, blank=True, related_name='Saved_books')
     User_Comments = models.ManyToManyField(Comment, blank=True)
 
 

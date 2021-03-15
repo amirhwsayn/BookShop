@@ -40,23 +40,6 @@ class Serializer_Comments(serializers.ModelSerializer):
         ]
 
 
-class Serializer_User(serializers.ModelSerializer):
-    comments = Serializer_Comments(source='User_Comments', many=True, read_only=True)
-
-    class Meta:
-        model = User
-        fields = [
-            'User_Token',
-            'User_Id',
-            'User_Password',
-            'User_Email',
-            'User_Credit',
-            'User_Name',
-            'User_CreateDate',
-            'comments'
-        ]
-
-
 class Serializer_Book_Rent(serializers.ModelSerializer):
     Book_File_Get = Serializer_File(source='Book_File', many=True, read_only=True)
     Book_Preview_Get = Serializer_File(source='Book_Preview', many=True, read_only=True)
@@ -105,4 +88,23 @@ class Serializer_ADS(serializers.ModelSerializer):
             'ADS_Title',
             'Book',
             'Image',
+        ]
+
+
+class Serializer_User(serializers.ModelSerializer):
+    comments = Serializer_Comments(source='User_Comments', many=True, read_only=True)
+    saved_books = Serializer_Book(source='User_Saved_Books', many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'User_Token',
+            'User_Id',
+            'User_Password',
+            'User_Email',
+            'User_Credit',
+            'User_Name',
+            'User_CreateDate',
+            'saved_books',
+            'comments'
         ]

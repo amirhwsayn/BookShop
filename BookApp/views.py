@@ -64,7 +64,7 @@ class RecentBooks(generics.ListAPIView):
 
 class SearchBook(generics.ListAPIView):
     permission_classes = [PERM_User]
-    serializer_class = Serializer_Book  
+    serializer_class = Serializer_Book
 
     def get_queryset(self):
         title = self.request.headers['key']
@@ -89,6 +89,28 @@ class SendComment(generics.CreateAPIView):
         User.objects.get(User_Token=userid).User_Comments.add(obj)
 
 
+class AddSavedBook(APIView):
+    permission_classes = [PERM_User]
+
+    def post(self, request):
+        if 'bookid' in request.headers and 'token' in request.headers:
+            bookid = request.headers['bookid']
+            userid = request.headers['token']
+            user = User.objects.get(User_Token=userid)\
+                .User_Saved_Books
+            try:
+                user.add(Books.objects.get(Book_UUID=bookid))
+            except ObjectDoesNotExist:
+                return errorBuild("کتاب مورد نظر یافت نشد")
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return errorBuild("درخواست نا معتبر")
+
+    # def handle_exception(self, exc):
+    #     if isinstance(exc, exceptions.ValidationError):
+    #         return errorBuild("درخواست نا معتبر")
+
+
 urls = [
     # Requirements
     # body -> {
@@ -100,31 +122,26 @@ urls = [
     # OK
     path('ct', CreateToken.as_view()),
 
-
     # Requirements
     # headers -> token:TokenTOKEN , code:TokenCODE
     # Description -> create user with token info
     # OK
     path('cu', CreateUser.as_view()),
 
-
     # Requirements :
     # headers -> token:UserToken
     # Description -> recent add book
     path('rb', RecentBooks.as_view()),
-
 
     # Requirements :
     # headers -> key:BookName , token:UserToken
     # Description -> search book with keyword
     path('sb', SearchBook.as_view()),
 
-
     # Requirements :
     # headers -> token:UserToken
     # Description -> get ads
     path('ga', GetADS.as_view()),
-
 
     # Requirements :
     # headers -> token:UserToken , bookid:BOOK_UUID
@@ -133,5 +150,10 @@ urls = [
     #       "Comment_Like" : ""
     #   }
     # Description -> create new comment for book
-    path('sc', SendComment.as_view())
+    path('sc', SendComment.as_view()),
+
+    # Requirements :
+    # headers -> token:UserToken , bookid:BOOK_UUID
+    path('ab', AddSavedBook.as_view())
+
 ]
