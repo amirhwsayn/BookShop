@@ -32,7 +32,7 @@ class Books(models.Model):
     Book_Name = models.CharField(max_length=50)
     Book_Description = models.TextField(max_length=300, blank=True)
     Book_Price = models.IntegerField(default=0)
-    Book_CreateDate = jmodel.jDateTimeField(auto_now=True)
+    Book_CreateDate = models.DateTimeField(auto_now=True)
     Book_File = models.ManyToManyField(Files, related_name='book_files')
     Book_Preview = models.ManyToManyField(Files, related_name='book_preview', blank=True)
     Book_Content = models.ManyToManyField(Files, related_name='book_content', blank=True)
@@ -53,7 +53,7 @@ class Author(models.Model):
     Author_Name = models.CharField(max_length=50, default=Random_Name)
     Author_Description = models.TextField(max_length=300, blank=True)
     Author_ProfileImage = models.FileField(upload_to='image/', blank=True)
-    Author_CreateDate = jmodel.jDateTimeField(auto_now=True)
+    Author_CreateDate = models.DateTimeField(auto_now=True)
     Author_Books = models.ManyToManyField(Books, blank=True, related_name='author_books')
     Author_Files = models.ManyToManyField(Files, blank=True, related_name='author_files')
 
@@ -65,7 +65,7 @@ class User(models.Model):
     User_Email = models.EmailField(unique=True)
     User_Credit = models.IntegerField(default=0)
     User_Name = models.CharField(max_length=50, default=Random_Name)
-    User_CreateDate = jmodel.jDateTimeField(auto_now=True)
+    User_CreateDate = models.DateTimeField(auto_now=True)
     User_Rented_Books = models.ManyToManyField(Books, blank=True)
     User_Comments = models.ManyToManyField(Comment, blank=True)
 

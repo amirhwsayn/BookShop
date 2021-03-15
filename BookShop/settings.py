@@ -38,15 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'BookApp.apps.BookappConfig',
-    'django_jalali',
-    'rest_framework'
+    'rest_framework',
 ]
-JALALI_DATE_DEFAULTS = {
-   'Strftime': {
-        'date': '%y/%m/%d',
-        'datetime': '%H:%M:%S _ %y/%m/%d',
-    },
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
