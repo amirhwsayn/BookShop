@@ -92,7 +92,6 @@ class Serializer_ADS(serializers.ModelSerializer):
 
 
 class Serializer_User(serializers.ModelSerializer):
-    comments = Serializer_Comments(source='User_Comments', many=True, read_only=True)
     saved_books = Serializer_Book(source='User_Saved_Books', many=True, read_only=True)
 
     class Meta:
@@ -106,5 +105,4 @@ class Serializer_User(serializers.ModelSerializer):
             'User_Name',
             'User_CreateDate',
             'saved_books',
-            'comments'
         ]
