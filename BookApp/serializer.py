@@ -1,11 +1,32 @@
 from rest_framework import serializers
-from .models import Token, User, Books, Files, ADS, Comment
+from .models import Token, User, Books, Files, ADS, Comment, Author, Category
 
 
 class Serializer_File(serializers.ModelSerializer):
     class Meta:
         model = Files
         fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        Files_File = {
+            "url": representation.pop("Files_File"),
+            "size": instance.Files_File.size,
+            "name": instance.Files_File.name,
+        }
+        representation['Files_File'] = Files_File
+        return representation
+
+
+class Serializer_Author(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = [
+            'Author_Name',
+            'Author_Description',
+            'Author_ProfileImage',
+            'Author_Books',
+        ]
 
 
 class Serializer_Token(serializers.ModelSerializer):
@@ -45,6 +66,7 @@ class Serializer_Book_Rent(serializers.ModelSerializer):
     Book_Preview_Get = Serializer_File(source='Book_Preview', many=True, read_only=True)
     Book_Content_Get = Serializer_File(source='Book_Content', many=True, read_only=True)
     Book_Comments_Get = Serializer_Comments(source='Book_Comments', many=True, read_only=True)
+    Book_Author_Get = Serializer_Author(source='author_books', many=True, read_only=True)
 
     class Meta:
         model = Books
@@ -57,13 +79,15 @@ class Serializer_Book_Rent(serializers.ModelSerializer):
             'Book_File_Get',
             'Book_Preview_Get',
             'Book_Content_Get',
-            'Book_Comments_Get'
+            'Book_Comments_Get',
+            'Book_Author_Get'
         ]
 
 
 class Serializer_Book(serializers.ModelSerializer):
     Book_Preview_Get = Serializer_File(source='Book_Preview', many=True, read_only=True)
     Book_Comments_Get = Serializer_Comments(source='Book_Comments', many=True, read_only=True)
+    Book_Author_Get = Serializer_Author(source='author_books', many=True, read_only=True)
 
     class Meta:
         model = Books
@@ -75,6 +99,7 @@ class Serializer_Book(serializers.ModelSerializer):
             # Get Data
             'Book_Preview_Get',
             'Book_Comments_Get',
+            'Book_Author_Get',
         ]
 
 
@@ -93,6 +118,7 @@ class Serializer_ADS(serializers.ModelSerializer):
 
 class Serializer_User(serializers.ModelSerializer):
     saved_books = Serializer_Book(source='User_Saved_Books', many=True, read_only=True)
+    rented_book = Serializer_Book_Rent(source='User_Rented_Books', many=True, read_only=True)
 
     class Meta:
         model = User
@@ -105,4 +131,20 @@ class Serializer_User(serializers.ModelSerializer):
             'User_Name',
             'User_CreateDate',
             'saved_books',
+            'rented_book',
         ]
+
+
+class Serializer_Category(serializers.ModelSerializer):
+    CategoryImage = Serializer_File(source='Category_Image', many=True, read_only=True)
+    CategoryBooks = Serializer_Book(source='Category_Books', many=True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = [
+            'Category_Name',
+            'Category_Description',
+            'CategoryImage',
+            'CategoryBooks',
+        ]
+

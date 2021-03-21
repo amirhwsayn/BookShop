@@ -6,8 +6,9 @@ from rest_framework.views import APIView
 
 from .Actions import SendMail, errorBuild
 from .Permissions import PERM_CreateUser, PERM_User
-from .models import User, Token, Books, ADS
-from .serializer import Serializer_Token, Serializer_User, Serializer_Book, Serializer_ADS, Serializer_Comments
+from .models import User, Token, Books, ADS, Category
+from .serializer import Serializer_Token, Serializer_User, Serializer_Book, Serializer_ADS, Serializer_Comments, \
+    Serializer_Book_Rent, Serializer_Category
 
 
 # Create your views here.
@@ -56,6 +57,14 @@ class CreateUser(APIView):
     #         return errorBuild('کد وارد شده نا معتبر است')
 
 
+class LoginUser(generics.ListAPIView):
+    serializer_class = Serializer_User
+
+    def get_queryset(self):
+        if 'id' in self.request.headers and 'password' in self.request.headers:
+            pass
+
+
 class RecentBooks(generics.ListAPIView):
     permission_classes = [PERM_User]
     serializer_class = Serializer_Book
@@ -96,7 +105,7 @@ class AddSavedBook(APIView):
         if 'bookid' in request.headers and 'token' in request.headers:
             bookid = request.headers['bookid']
             userid = request.headers['token']
-            user = User.objects.get(User_Token=userid)\
+            user = User.objects.get(User_Token=userid) \
                 .User_Saved_Books
             try:
                 user.add(Books.objects.get(Book_UUID=bookid))
@@ -109,6 +118,17 @@ class AddSavedBook(APIView):
     # def handle_exception(self, exc):
     #     if isinstance(exc, exceptions.ValidationError):
     #         return errorBuild("درخواست نا معتبر")
+
+
+class GetCategory(generics.ListAPIView):
+    permission_classes = [PERM_User]
+    queryset = Category.objects.all()
+    serializer_class = Serializer_Category
+
+
+class TEST(generics.ListAPIView):
+    queryset = Books.objects.all()
+    serializer_class = Serializer_Book_Rent
 
 
 urls = [
@@ -154,6 +174,12 @@ urls = [
 
     # Requirements :
     # headers -> token:UserToken , bookid:BOOK_UUID
-    path('ab', AddSavedBook.as_view())
+    path('ab', AddSavedBook.as_view()),
+
+    # Requirements :
+    # headers -> token:UserToken
+    path('gt', GetCategory.as_view()),
+
+    path('t', TEST.as_view())
 
 ]
