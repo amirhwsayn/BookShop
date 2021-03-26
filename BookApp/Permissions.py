@@ -38,3 +38,11 @@ class PERM_User(permissions.BasePermission):
                 return False
         else:
             return False
+
+
+class PERM_login(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if 'id' in request.headers and 'password' in request.headers:
+            return True
+        else:
+            return False

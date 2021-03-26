@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .Actions import SendMail, errorBuild
-from .Permissions import PERM_CreateUser, PERM_User
+from .Permissions import PERM_CreateUser, PERM_User, PERM_login
 from .models import User, Token, Books, ADS, Category
 from .serializer import Serializer_Token, Serializer_User, Serializer_Book, Serializer_ADS, Serializer_Comments, \
     Serializer_Book_Rent, Serializer_Category
@@ -58,11 +58,13 @@ class CreateUser(APIView):
 
 
 class LoginUser(generics.ListAPIView):
+    permission_classes = [PERM_login]
     serializer_class = Serializer_User
 
     def get_queryset(self):
-        if 'id' in self.request.headers and 'password' in self.request.headers:
-            pass
+        id = self.request.headers['id']
+        password = self.request.headers['password']
+        return User.objects.get(User_Id=id, User_Password=password)
 
 
 class RecentBooks(generics.ListAPIView):
@@ -179,6 +181,11 @@ urls = [
     # Requirements :
     # headers -> token:UserToken
     path('gt', GetCategory.as_view()),
+
+    # Requirements :
+    # headers -> id:UserID , password:UserPassword
+    path('lu', LoginUser.as_view()),
+
 
     path('t', TEST.as_view())
 
