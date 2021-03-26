@@ -64,7 +64,7 @@ class LoginUser(generics.ListAPIView):
     def get_queryset(self):
         id = self.request.headers['id']
         password = self.request.headers['password']
-        return User.objects.get(User_Id=id, User_Password=password)
+        return User.objects.filter(User_Id=id, User_Password=password)
 
 
 class RecentBooks(generics.ListAPIView):
