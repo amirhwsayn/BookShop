@@ -8,6 +8,7 @@ from BookApp.Randoms import Random_Token, Random_Name, Random_Code
 # Create your models here.
 class Files(models.Model):
     File_UUID = models.UUIDField(default=uuid4, primary_key=True)
+    File_Name = models.CharField(max_length=50, default='null')
     Files_File = models.FileField(upload_to='file/')
 
 

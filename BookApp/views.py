@@ -8,7 +8,7 @@ from .Actions import SendMail, errorBuild
 from .Permissions import PERM_CreateUser, PERM_User, PERM_login
 from .models import User, Token, Books, ADS, Category
 from .serializer import Serializer_Token, Serializer_User, Serializer_Book, Serializer_ADS, Serializer_Comments, \
-    Serializer_Book_Rent, Serializer_Category
+    Serializer_Category, Serializer_Book_Free
 
 
 # Create your views here.
@@ -69,17 +69,8 @@ class LoginUser(generics.ListAPIView):
 
 class AllBooks(generics.ListAPIView):
     # permission_classes = [PERM_User]
-    serializer_class = Serializer_Book
+    serializer_class = Serializer_Book_Free
     queryset = Books.objects.all()
-
-
-class SearchBook(generics.ListAPIView):
-    # permission_classes = [PERM_User]
-    serializer_class = Serializer_Book
-
-    def get_queryset(self):
-        title = self.request.headers['key']
-        return Books.objects.filter(Book_Name__startswith=title)
 
 
 class GetADS(generics.ListAPIView):
@@ -130,7 +121,7 @@ class GetCategory(generics.ListAPIView):
 
 class TEST(generics.ListAPIView):
     queryset = Books.objects.all()
-    serializer_class = Serializer_Book_Rent
+    serializer_class = Serializer_Book_Free
 
 
 urls = [
