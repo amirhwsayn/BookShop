@@ -10,11 +10,12 @@ class Serializer_File(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         Files_File = {
+            "uuid": instance.File_UUID,
             "url": representation.pop("Files_File"),
             "size": instance.Files_File.size,
             "name": instance.Files_File.name,
         }
-        representation['Files_File'] = Files_File
+        representation = Files_File
         return representation
 
 
@@ -25,7 +26,6 @@ class Serializer_Author(serializers.ModelSerializer):
             'Author_Name',
             'Author_Description',
             'Author_ProfileImage',
-            'Author_Books',
         ]
 
 
@@ -147,4 +147,3 @@ class Serializer_Category(serializers.ModelSerializer):
             'CategoryImage',
             'CategoryBooks',
         ]
-

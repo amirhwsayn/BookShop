@@ -67,14 +67,14 @@ class LoginUser(generics.ListAPIView):
         return User.objects.filter(User_Id=id, User_Password=password)
 
 
-class RecentBooks(generics.ListAPIView):
-    permission_classes = [PERM_User]
+class AllBooks(generics.ListAPIView):
+    # permission_classes = [PERM_User]
     serializer_class = Serializer_Book
-    queryset = Books.objects.all()[:20]
+    queryset = Books.objects.all()
 
 
 class SearchBook(generics.ListAPIView):
-    permission_classes = [PERM_User]
+    # permission_classes = [PERM_User]
     serializer_class = Serializer_Book
 
     def get_queryset(self):
@@ -83,7 +83,7 @@ class SearchBook(generics.ListAPIView):
 
 
 class GetADS(generics.ListAPIView):
-    permission_classes = [PERM_User]
+    # permission_classes = [PERM_User]
     queryset = ADS.objects.all()
     serializer_class = Serializer_ADS
 
@@ -123,7 +123,7 @@ class AddSavedBook(APIView):
 
 
 class GetCategory(generics.ListAPIView):
-    permission_classes = [PERM_User]
+    # permission_classes = [PERM_User]
     queryset = Category.objects.all()
     serializer_class = Serializer_Category
 
@@ -153,7 +153,7 @@ urls = [
     # Requirements :
     # headers -> token:UserToken
     # Description -> recent add book
-    path('rb', RecentBooks.as_view()),
+    path('abk', AllBooks.as_view()),
 
     # Requirements :
     # headers -> key:BookName , token:UserToken
