@@ -69,7 +69,7 @@ class LoginUser(generics.ListAPIView):
 
 class AllBooks(generics.ListAPIView):
     # permission_classes = [PERM_User]
-    serializer_class = Serializer_Book_Free
+    serializer_class = Serializer_Book
     queryset = Books.objects.all()
 
 
@@ -145,11 +145,6 @@ urls = [
     # headers -> token:UserToken
     # Description -> recent add book
     path('abk', AllBooks.as_view()),
-
-    # Requirements :
-    # headers -> key:BookName , token:UserToken
-    # Description -> search book with keyword
-    path('sb', SearchBook.as_view()),
 
     # Requirements :
     # headers -> token:UserToken
