@@ -91,6 +91,7 @@ class Serializer_Book(serializers.ModelSerializer):
             # book data
             'Book_Token',
             'Book_Name',
+            'Book_Cover',
             'Book_Description',
             'Book_Price',
             'Book_CreateDate',
@@ -116,6 +117,7 @@ class Serializer_Book_Free(serializers.ModelSerializer):
             # book data
             'Book_Token',
             'Book_Name',
+            'Book_Cover',
             'Book_Description',
             'Book_Price',
             'Book_CreateDate',
