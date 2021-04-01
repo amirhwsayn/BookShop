@@ -131,7 +131,6 @@ class Serializer_Book_Free(serializers.ModelSerializer):
 
 
 class Serializer_ADS(serializers.ModelSerializer):
-    Image = Serializer_File(source='ADS_Image', read_only=True, many=True)
     Book = Serializer_Book_Free(source='ADS_Book', read_only=True, many=True)
 
     class Meta:
@@ -139,8 +138,8 @@ class Serializer_ADS(serializers.ModelSerializer):
         fields = [
             'ADS_UUID',
             'ADS_Title',
+            'ADS_Image',
             'Book',
-            'Image',
         ]
 
 
