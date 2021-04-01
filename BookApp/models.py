@@ -36,6 +36,7 @@ class Books(models.Model):
 
 
 class ADS(models.Model):
+    ADS_UUID = models.UUIDField(default=uuid4, primary_key=True)
     ADS_Title = models.TextField(max_length=300)
     ADS_Image = models.ManyToManyField(Files, related_name='ads_image')
     ADS_Book = models.ManyToManyField(Books, blank=True, related_name='ads_book')

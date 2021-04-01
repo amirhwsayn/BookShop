@@ -137,6 +137,7 @@ class Serializer_ADS(serializers.ModelSerializer):
     class Meta:
         model = ADS
         fields = [
+            'ADS_UUID',
             'ADS_Title',
             'Book',
             'Image',
